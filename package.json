@@ -1,0 +1,23 @@
+{
+  "name": "cardgame187-multiplayer",
+  "version": "2.0.0",
+  "description": "لعبة 187 - نسخة متعددة اللاعبين عبر الإنترنت",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": ["card", "game", "multiplayer", "187", "arabic"],
+  "author": "Manus AI",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.6.1",
+    "sqlite3": "^5.1.7",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
+
