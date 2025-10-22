@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>لعبة 187 - Multiplayer</title>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles_mobile.css">
+    <link rel="stylesheet" href="styles_compact.css">
+    <link rel="stylesheet" href="styles_enhanced.css">
+    <link rel="stylesheet" href="styles_final_fix.css">
+    
+    <!-- Icons -->
+    <link rel="icon" href="icon.png">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    
+    <style>
+        /* Multiplayer specific styles */
+        .screen {
+            display: none;
+        }
+        
+        .screen.active {
+            display: block;
+        }
+        
+        /* Home Screen */
+        #home-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .logo {
+            font-size: 72px;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .subtitle {
+            font-size: 24px;
+            color: #d4d4d4;
+            margin-bottom: 50px;
+        }
+        
+        .menu-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .menu-btn {
+            padding: 20px 40px;
+            font-size: 22px;
+            background: linear-gradient(135deg, #2a7f5f 0%, #1a5f3f 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        
+        .menu-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+        }
+        
+        .menu-btn:active {
+            transform: translateY(0);
+        }
+        
+        /* Join Screen */
+        #join-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .join-form {
+            max-width: 400px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+            text-align: right;
+        }
+        
+        .form-group label {
+            display: block;
+            color: white;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            border: 2px solid #2a7f5f;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.9);
+            text-align: right;
+            direction: rtl;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #3a9f7f;
+            box-shadow: 0 0 10px rgba(42,127,95,0.5);
+        }
+        
+        .btn-primary {
+            width: 100%;
+            padding: 18px;
+            font-size: 20px;
+            background: linear-gradient(135deg, #2a7f5f 0%, #1a5f3f 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 10px;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+        }
+        
+        .btn-secondary {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        /* Waiting Room */
+        #waiting-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .room-info {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .room-code {
+            font-size: 48px;
+            font-weight: bold;
+            color: #fff;
+            letter-spacing: 5px;
+            margin: 20px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .share-link {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            word-break: break-all;
+            color: #fff;
+            font-size: 14px;
+        }
+        
+        .copy-btn {
+            padding: 10px 30px;
+            background: #2a7f5f;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        
+        .players-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            max-width: 500px;
+            margin: 30px auto;
+        }
+        
+        .player-slot {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px dashed rgba(255,255,255,0.3);
+        }
+        
+        .player-slot.filled {
+            background: rgba(42,127,95,0.3);
+            border: 2px solid #2a7f5f;
+        }
+        
+        .player-name {
+            font-size: 20px;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .player-status {
+            font-size: 14px;
+            color: #d4d4d4;
+            margin-top: 5px;
+        }
+        
+        .waiting-text {
+            font-size: 18px;
+            color: #d4d4d4;
+            margin-top: 30px;
+        }
+        
+        /* Game Screen */
+        #game-screen {
+            /* Will use existing game styles */
+        }
+        
+        /* Loading */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Error Messages */
+        .error-message {
+            background: rgba(220,53,69,0.9);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Home Screen -->
+    <div id="home-screen" class="screen active">
+        <div class="logo">🎴 187</div>
+        <div class="subtitle">لعبة الورق الكلاسيكية</div>
+        
+        <div class="menu-buttons">
+            <button class="menu-btn" onclick="showCreateRoom()">
+                🆕 إنشاء غرفة جديدة
+            </button>
+            <button class="menu-btn" onclick="showJoinRoom()">
+                🚪 الانضمام إلى غرفة
+            </button>
+            <button class="menu-btn" onclick="showLeaderboard()">
+                🏆 لوحة التسجيل
+            </button>
+            <button class="menu-btn" onclick="showHistory()">
+                📜 سجل المباريات
+            </button>
+        </div>
+    </div>
+    
+    <!-- Join Screen -->
+    <div id="join-screen" class="screen">
+        <h1 style="color: white; margin-bottom: 30px;">الانضمام إلى غرفة</h1>
+        
+        <div class="join-form">
+            <div class="form-group">
+                <label for="player-name">اسمك:</label>
+                <input type="text" id="player-name" placeholder="أدخل اسمك" maxlength="20" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="room-code">رمز الغرفة:</label>
+                <input type="text" id="room-code" placeholder="أدخل رمز الغرفة" maxlength="8" required>
+            </div>
+            
+            <div class="error-message" id="join-error"></div>
+            
+            <button class="btn-primary" onclick="joinRoom()">
+                انضم الآن
+            </button>
+            
+            <button class="btn-secondary" onclick="showHome()">
+                رجوع
+            </button>
+        </div>
+    </div>
+    
+    <!-- Waiting Room Screen -->
+    <div id="waiting-screen" class="screen">
+        <h1 style="color: white; margin-bottom: 12px; font-size: 28px;">غرفة الانتظار</h1>
+        
+        <div class="room-info" style="margin-bottom: 15px;">
+            <p style="color: white; font-size: 16px; margin-bottom: 8px;">رمز الغرفة:</p>
+            <div class="room-code" id="display-room-code" style="font-size: 28px; padding: 10px;">----</div>
+            
+            <p style="color: white; font-size: 14px; margin-top: 12px; margin-bottom: 8px;">شارك مع أصدقائك:</p>
+            <div class="share-link" id="share-link" style="font-size: 12px; padding: 8px;">---</div>
+            <button class="copy-btn" onclick="copyLink()" style="padding: 8px 15px; font-size: 14px;">📋 نسخ</button>
+        </div>
+        
+        <div class="players-list" id="players-list" style="margin-bottom: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; max-width: 400px; margin-left: auto; margin-right: auto;">
+            <div class="player-slot" style="padding: 10px; font-size: 14px;">
+                <div class="player-name" style="font-size: 14px;">في انتظار...</div>
+                <div class="player-status" style="font-size: 12px;">1/4</div>
+            </div>
+            <div class="player-slot" style="padding: 10px; font-size: 14px;">
+                <div class="player-name" style="font-size: 14px;">في انتظار...</div>
+                <div class="player-status" style="font-size: 12px;">2/4</div>
+            </div>
+            <div class="player-slot" style="padding: 10px; font-size: 14px;">
+                <div class="player-name" style="font-size: 14px;">في انتظار...</div>
+                <div class="player-status" style="font-size: 12px;">3/4</div>
+            </div>
+            <div class="player-slot" style="padding: 10px; font-size: 14px;">
+                <div class="player-name" style="font-size: 14px;">في انتظار...</div>
+                <div class="player-status" style="font-size: 12px;">4/4</div>
+            </div>
+        </div>
+        
+        <button class="btn-primary" onclick="startGameNow()" style="max-width: 350px; margin: 15px auto; font-size: 22px; padding: 20px; background: linear-gradient(135deg, #ffa500 0%, #ff8c00 100%); box-shadow: 0 4px 15px rgba(255,165,0,0.5);">
+            🎮 بدء اللعبة الآن
+        </button>
+        
+        <div class="waiting-text" style="margin-top: 10px;">
+            <p style="font-size: 14px; color: #ffd700;">💡 ابدأ الآن وسيتم ملء الأماكن الفارغة بلاعبين AI</p>
+            <p style="font-size: 13px; margin-top: 8px; color: #d4d4d4;">أو انتظر حتى ينضم 4 لاعبين (ستبدأ تلقائياً)</p>
+        </div>
+        
+        <button class="btn-secondary" onclick="leaveRoom()" style="max-width: 300px; margin: 10px auto;">
+            مغادرة الغرفة
+        </button>
+    </div>
+    
+    <!-- Game Screen -->
+    <div id="game-screen" class="screen">
+        <!-- سيتم إضافة واجهة اللعبة هنا -->
+        <div id="game-container"></div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="sounds.js"></script>
+    <script src="game-multiplayer.js"></script>
+    <script src="multiplayer.js"></script>
+</body>
+</html>
+

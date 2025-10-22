@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سجل المباريات - لعبة 187</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #2a7f5f 0%, #1a5f3f 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .history-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 40px;
+            color: white;
+        }
+        
+        .history-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .history-header h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        
+        .game-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 2px solid rgba(255,255,255,0.1);
+        }
+        
+        .game-card:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.3);
+        }
+        
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .game-id {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ffd700;
+        }
+        
+        .game-date {
+            font-size: 16px;
+            color: #d4d4d4;
+        }
+        
+        .game-players {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+        
+        .player-result {
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .player-result.winner {
+            background: rgba(42,127,95,0.3);
+            border: 2px solid #2a7f5f;
+        }
+        
+        .player-result.loser {
+            background: rgba(139,0,0,0.2);
+            border: 2px solid #8b0000;
+        }
+        
+        .player-result-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .player-result-score {
+            font-size: 24px;
+            color: #ffd700;
+        }
+        
+        .back-button {
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .back-button button {
+            padding: 15px 40px;
+            font-size: 20px;
+            background: linear-gradient(135deg, #2a7f5f 0%, #1a5f3f 100%);
+            color: white;
+            border: 2px solid white;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        
+        .back-button button:hover {
+            background: linear-gradient(135deg, #1a5f3f 0%, #2a7f5f 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="history-container">
+        <div class="history-header">
+            <h1>📜 سجل المباريات</h1>
+            <p>جميع المباريات السابقة</p>
+        </div>
+        
+        <div id="games-list">
+            <div style="text-align: center; padding: 50px; font-size: 20px;">
+                جاري تحميل البيانات...
+            </div>
+        </div>
+        
+        <div class="back-button">
+            <button onclick="window.location.href='/'">🏠 العودة للصفحة الرئيسية</button>
+        </div>
+    </div>
+    
+    <script>
+        // Load games history
+        async function loadGamesHistory() {
+            try {
+                const response = await fetch('/api/games-history');
+                const data = await response.json();
+                
+                const gamesListEl = document.getElementById('games-list');
+                
+                if (data.length === 0) {
+                    gamesListEl.innerHTML = `
+                        <div style="text-align: center; padding: 50px; font-size: 20px;">
+                            لا توجد مباريات مسجلة حتى الآن. ابدأ اللعب الآن!
+                        </div>
+                    `;
+                    return;
+                }
+                
+                gamesListEl.innerHTML = data.map(game => {
+                    const date = new Date(game.created_at).toLocaleString('ar-EG', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                    
+                    const players = JSON.parse(game.players);
+                    const winner = game.winner_name;
+                    
+                    return `
+                        <div class="game-card">
+                            <div class="game-header">
+                                <div class="game-id">🎮 مباراة #${game.id}</div>
+                                <div class="game-date">📅 ${date}</div>
+                            </div>
+                            
+                            <div class="game-players">
+                                ${players.map(player => {
+                                    const isWinner = player.name === winner;
+                                    const resultClass = game.status === 'completed' 
+                                        ? (isWinner ? 'winner' : 'loser')
+                                        : '';
+                                    
+                                    return `
+                                        <div class="player-result ${resultClass}">
+                                            <div class="player-result-name">
+                                                ${player.name} ${isWinner ? '👑' : ''}
+                                            </div>
+                                            <div class="player-result-score">
+                                                ${player.score || 0}
+                                            </div>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (error) {
+                console.error('Error loading games history:', error);
+                document.getElementById('games-list').innerHTML = `
+                    <div style="text-align: center; padding: 50px; font-size: 20px; color: #ff6b6b;">
+                        حدث خطأ في تحميل البيانات
+                    </div>
+                `;
+            }
+        }
+        
+        // Load on page load
+        loadGamesHistory();
+    </script>
+</body>
+</html>
+

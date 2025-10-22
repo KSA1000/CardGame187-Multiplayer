@@ -1,0 +1,412 @@
+/* تصميم مضغوط لشاشة واحدة - لعبة 187 */
+
+/* إعادة تعيين كاملة للتصميم */
+@media (max-width: 768px) {
+    body, html {
+        margin: 0;
+        padding: 0;
+        overflow: hidden !important;
+        height: 100vh;
+        width: 100vw;
+    }
+    
+    #app {
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden !important;
+    }
+    
+    .screen {
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden !important;
+    }
+    
+    #gameScreen {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    /* منطقة النقاط - مضغوطة جداً */
+    .scores-bar {
+        padding: 4px 5px !important;
+        min-height: auto !important;
+        flex-shrink: 0;
+        background: rgba(0, 0, 0, 0.3) !important;
+    }
+    
+    .player-score {
+        font-size: 0.7rem !important;
+        padding: 3px 6px !important;
+        min-width: 60px !important;
+        margin: 2px !important;
+    }
+    
+    .player-score .player-name {
+        font-size: 0.65rem !important;
+    }
+    
+    .player-score .score {
+        font-size: 0.9rem !important;
+    }
+    
+    /* معلومات الجولة - مضغوطة */
+    .round-info {
+        padding: 4px 8px !important;
+        min-height: auto !important;
+        flex-shrink: 0;
+        gap: 5px !important;
+    }
+    
+    .info-item {
+        font-size: 0.7rem !important;
+        padding: 2px 6px !important;
+    }
+    
+    .info-item .label {
+        font-size: 0.65rem !important;
+    }
+    
+    .info-item .value {
+        font-size: 0.75rem !important;
+    }
+    
+    /* منطقة اللعب الرئيسية */
+    .game-area {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 3px !important;
+        overflow: hidden !important;
+        min-height: 0;
+    }
+    
+    /* اللاعب العلوي - مضغوط جداً */
+    .opponent-area.opponent-top {
+        flex-shrink: 0;
+        padding: 2px !important;
+        margin-bottom: 3px !important;
+    }
+    
+    .opponent-area .player-info {
+        font-size: 0.65rem !important;
+        margin-bottom: 2px !important;
+    }
+    
+    .opponent-cards {
+        gap: 3px !important;
+        justify-content: center;
+    }
+    
+    .opponent-cards .card {
+        width: 35px !important;
+        height: 49px !important;
+    }
+    
+    /* الصف الأوسط */
+    .middle-row {
+        flex: 1;
+        display: flex;
+        gap: 3px;
+        min-height: 0;
+        overflow: hidden;
+    }
+    
+    .opponent-area.opponent-left,
+    .opponent-area.opponent-right {
+        flex-shrink: 0;
+        width: 60px !important;
+        padding: 2px !important;
+    }
+    
+    .opponent-area.opponent-left .opponent-cards,
+    .opponent-area.opponent-right .opponent-cards {
+        flex-direction: column !important;
+        align-items: center;
+        gap: 2px !important;
+    }
+    
+    .opponent-area.opponent-left .opponent-cards .card,
+    .opponent-area.opponent-right .opponent-cards .card {
+        width: 35px !important;
+        height: 49px !important;
+        margin: 0 !important;
+    }
+    
+    /* منطقة الطاولة */
+    .table-area {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 5px !important;
+        min-height: 0;
+        overflow: visible !important;
+    }
+    
+    /* الأوراق الملعوبة - شبكة 2x2 */
+    .played-cards {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        grid-template-rows: 1fr 1fr !important;
+        gap: 8px !important;
+        width: 120px !important;
+        height: 120px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    .played-cards .card {
+        width: 50px !important;
+        height: 70px !important;
+        position: relative !important;
+        transform: none !important;
+        margin: 0 !important;
+    }
+    
+    /* مؤشر اللاعب على الورقة */
+    .played-cards .card::before {
+        content: attr(data-player);
+        position: absolute;
+        top: -18px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 1px 5px;
+        border-radius: 8px;
+        font-size: 0.6rem;
+        white-space: nowrap;
+        z-index: 10;
+    }
+    
+    /* الأوراق في الميدان */
+    .field-cards {
+        display: flex;
+        gap: 5px;
+        justify-content: center;
+        margin-top: 5px;
+    }
+    
+    .field-cards .card {
+        width: 40px !important;
+        height: 56px !important;
+    }
+    
+    /* أوراق اللاعب - مضغوطة */
+    .player-hand {
+        flex-shrink: 0;
+        padding: 5px 3px !important;
+        overflow-x: auto !important;
+        overflow-y: visible !important;
+        -webkit-overflow-scrolling: touch !important;
+        min-height: 90px !important;
+        max-height: 95px !important;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+    }
+    
+    .player-hand .card {
+        width: 38px !important;
+        height: 53px !important;
+        margin: 0 -3px !important;
+        font-size: 0.55rem !important;
+        flex-shrink: 0;
+    }
+    
+    .player-hand .card:hover {
+        transform: translateY(-10px) !important;
+        margin: 0 5px !important;
+    }
+    
+    .player-hand .card .rank {
+        font-size: 0.85rem !important;
+    }
+    
+    .player-hand .card .suit {
+        font-size: 1rem !important;
+    }
+    
+    /* أزرار التحكم - مضغوطة */
+    .game-controls {
+        flex-shrink: 0;
+        padding: 3px !important;
+        text-align: center;
+    }
+    
+    .btn-small {
+        padding: 5px 12px !important;
+        font-size: 0.75rem !important;
+    }
+    
+    /* منطقة الرسائل */
+    .message-area {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(0, 0, 0, 0.85);
+        color: white;
+        padding: 8px 15px;
+        border-radius: 10px;
+        font-size: 0.85rem;
+        z-index: 100;
+        pointer-events: none;
+        max-width: 80%;
+        text-align: center;
+    }
+    
+    /* النوافذ المنبثقة */
+    .modal-content {
+        max-width: 90% !important;
+        max-height: 85vh !important;
+        padding: 12px !important;
+    }
+    
+    .modal-content h3 {
+        font-size: 1.1rem !important;
+        margin-bottom: 8px !important;
+    }
+    
+    /* أزرار المزايدة */
+    .bidding-buttons {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 6px !important;
+        max-height: 200px !important;
+        overflow-y: auto !important;
+    }
+    
+    .bid-btn {
+        padding: 10px !important;
+        font-size: 0.9rem !important;
+    }
+    
+    /* أوراق اللاعب في نافذة المزايدة */
+    .bidding-player-cards {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 4px;
+        margin: 10px 0;
+        padding: 8px;
+        background: rgba(26, 95, 63, 0.3);
+        border-radius: 8px;
+        max-height: 100px;
+        overflow-y: auto;
+    }
+    
+    .bidding-player-cards .card {
+        width: 38px !important;
+        height: 53px !important;
+        font-size: 0.55rem !important;
+        margin: 0 !important;
+    }
+    
+    /* أوراق اللاعب في نافذة اختيار الحكم */
+    .trump-player-cards {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 4px;
+        margin: 10px 0;
+        padding: 8px;
+        background: rgba(26, 95, 63, 0.3);
+        border-radius: 8px;
+        max-height: 100px;
+        overflow-y: auto;
+    }
+    
+    .trump-player-cards .card {
+        width: 38px !important;
+        height: 53px !important;
+        font-size: 0.55rem !important;
+        margin: 0 !important;
+    }
+    
+    /* اختيار الحكم */
+    .trump-selection {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 8px !important;
+    }
+    
+    .trump-btn {
+        padding: 12px !important;
+    }
+    
+    .trump-btn .suit-symbol {
+        font-size: 2rem !important;
+    }
+    
+    .trump-btn span:last-child {
+        font-size: 0.85rem !important;
+    }
+    
+    /* إعادة الأوراق */
+    .return-cards-area {
+        gap: 4px !important;
+        max-height: 180px !important;
+        overflow-y: auto !important;
+    }
+    
+    .return-cards-area .card {
+        width: 40px !important;
+        height: 56px !important;
+    }
+    
+    /* الأزرار */
+    .btn {
+        padding: 10px 18px !important;
+        font-size: 0.85rem !important;
+    }
+    
+    /* إخفاء أي تمرير */
+    body::-webkit-scrollbar,
+    #app::-webkit-scrollbar,
+    .screen::-webkit-scrollbar {
+        display: none !important;
+    }
+}
+
+/* للشاشات الصغيرة جداً */
+@media (max-width: 400px) and (max-height: 700px) {
+    .scores-bar {
+        padding: 2px 3px !important;
+    }
+    
+    .player-score {
+        font-size: 0.6rem !important;
+        padding: 2px 4px !important;
+        min-width: 50px !important;
+    }
+    
+    .round-info {
+        padding: 2px 5px !important;
+    }
+    
+    .info-item {
+        font-size: 0.6rem !important;
+        padding: 1px 4px !important;
+    }
+    
+    .player-hand .card {
+        width: 38px !important;
+        height: 53px !important;
+    }
+    
+    .played-cards {
+        width: 100px !important;
+        height: 100px !important;
+        gap: 6px !important;
+    }
+    
+    .played-cards .card {
+        width: 42px !important;
+        height: 59px !important;
+    }
+}
+

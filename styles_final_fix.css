@@ -1,0 +1,162 @@
+/* إصلاحات نهائية للأوراق */
+
+/* إزالة الشفافية من جميع الأوراق */
+.card {
+    opacity: 1 !important;
+    background: white !important;
+}
+
+.card.disabled {
+    opacity: 1 !important;
+}
+
+/* تكبير منطقة أوراق اللاعب */
+@media (max-width: 768px) {
+    .player-hand {
+        min-height: 120px !important;
+        max-height: 130px !important;
+        padding: 10px 5px !important;
+        overflow-x: visible !important;
+        overflow-y: visible !important;
+    }
+    
+    /* تقليل التداخل لإظهار جميع الأوراق */
+    .player-hand {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        justify-content: center !important;
+        gap: 2px !important;
+    }
+    
+    .player-hand .card {
+        width: 38px !important;
+        height: 53px !important;
+        margin: 0 !important;
+        font-size: 0.65rem !important;
+        flex-shrink: 0;
+        opacity: 1 !important;
+        background: white !important;
+        padding: 3px !important;
+    }
+    
+    .player-hand .card .suit {
+        font-size: 1.2rem !important;
+    }
+    
+    .player-hand .card:hover,
+    .player-hand .card:active {
+        transform: translateY(-15px) scale(1.1) !important;
+        margin: 0 8px !important;
+        z-index: 100;
+    }
+}
+
+/* للشاشات الصغيرة جداً */
+@media (max-width: 400px) {
+    .player-hand {
+        min-height: 110px !important;
+        max-height: 120px !important;
+    }
+    
+    .player-hand {
+        gap: 1px !important;
+    }
+    
+    .player-hand .card {
+        width: 36px !important;
+        height: 50px !important;
+        margin: 0 !important;
+        font-size: 0.6rem !important;
+        padding: 2px !important;
+    }
+    
+    .player-hand .card .suit {
+        font-size: 1.1rem !important;
+    }
+}
+
+/* تحسين خلفية الأوراق المقلوبة */
+.card.back {
+    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%) !important;
+    opacity: 1 !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.card.back::before {
+    content: '\1F0A0';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    color: rgba(255,255,255,0.3);
+}
+
+.card.back::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.05) 10px, rgba(255,255,255,0.05) 20px),
+        repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.05) 10px, rgba(255,255,255,0.05) 20px);
+}
+
+/* تحسين خلفية الأوراق العادية */
+.card:not(.back) {
+    background: white !important;
+    opacity: 1 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
+}
+
+
+
+/* تقليص المساحات العلوية لإفساح المجال للأوراق */
+@media (max-width: 768px) {
+    .scores-area {
+        padding: 5px !important;
+        min-height: 50px !important;
+        max-height: 60px !important;
+    }
+    
+    .player-score {
+        padding: 5px 10px !important;
+        font-size: 0.8rem !important;
+    }
+    
+    .game-info {
+        padding: 8px !important;
+        min-height: 40px !important;
+        font-size: 0.85rem !important;
+    }
+    
+    .opponent-area {
+        padding: 5px !important;
+    }
+    
+    .opponent-area.opponent-top {
+        margin-bottom: 5px !important;
+    }
+    
+    /* زيادة المساحة السفلية */
+    .player-hand {
+        padding: 10px 5px 15px 5px !important;
+        margin-bottom: 10px !important;
+    }
+}
+
+/* تأكد من أن الأوراق ظاهرة بالكامل */
+@media (max-width: 768px) {
+    #gameScreen {
+        padding-bottom: 20px !important;
+    }
+    
+    .player-hand {
+        position: relative !important;
+        bottom: 0 !important;
+    }
+}
+

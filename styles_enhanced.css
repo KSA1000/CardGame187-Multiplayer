@@ -1,0 +1,307 @@
+/* تحسينات اللعبة - أنيميشن وألوان */
+
+/* أنيميشن الأوراق عند اللعب */
+@keyframes cardSlideIn {
+    from {
+        transform: translateY(80px) scale(0.5);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes cardPlayAnimation {
+    0% {
+        transform: translateY(0) scale(1);
+    }
+    30% {
+        transform: translateY(-30px) scale(1.15);
+    }
+    60% {
+        transform: translateY(-15px) scale(1.1);
+    }
+    100% {
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes cardWinGlow {
+    0%, 100% {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(255, 215, 0, 0.9), 0 0 50px rgba(255, 215, 0, 0.6);
+        transform: scale(1.1);
+    }
+}
+
+@keyframes cardCollect {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+
+/* تطبيق الأنيميشن على الأوراق */
+.card {
+    animation: cardSlideIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: all 0.3s ease;
+}
+
+.card.playing {
+    animation: cardPlayAnimation 0.8s ease-in-out;
+}
+
+.card.winning {
+    animation: cardWinGlow 1.2s ease-in-out infinite;
+}
+
+.card.collecting {
+    animation: cardCollect 0.6s ease-out forwards;
+}
+
+/* تحسين الأوراق المقلوبة - لون خلفية مميز */
+.opponent-cards .card,
+.field-cards .card {
+    background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #1e40af 100%) !important;
+    border: 3px solid #3b82f6 !important;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4) !important;
+}
+
+.opponent-cards .card::before {
+    content: '🂠';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* تحسين أوراق اللاعب - تقليل التداخل */
+@media (max-width: 768px) {
+    .player-hand {
+        padding: 8px 5px !important;
+        overflow-x: auto !important;
+        overflow-y: visible !important;
+        min-height: 85px !important;
+        max-height: 90px !important;
+    }
+    
+    .player-hand .card {
+        margin: 0 -3px !important;
+        width: 38px !important;
+        height: 53px !important; /* تقليل التداخل إلى -5px */
+        flex-shrink: 0;
+    }
+    
+    .player-hand .card:first-child {
+        margin-right: 0 !important;
+    }
+    
+    .player-hand .card:last-child {
+        margin-left: 0 !important;
+    }
+    
+    .player-hand .card:hover,
+    .player-hand .card:active {
+        transform: translateY(-20px) scale(1.1) !important;
+        margin: 0 10px !important; /* إعطاء مساحة أكبر عند التحديد */
+        z-index: 100;
+    }
+}
+
+/* للشاشات الصغيرة جداً - تقليل التداخل أكثر */
+@media (max-width: 400px) {
+    .player-hand .card {
+        margin: 0 -2px !important; /* تداخل أقل للشاشات الصغيرة */
+        width: 38px !important;
+        height: 53px !important;
+    }
+    
+    .player-hand .card:hover,
+    .player-hand .card:active {
+        margin: 0 8px !important;
+    }
+}
+
+/* أنيميشن للأوراق الملعوبة */
+.played-cards .card {
+    animation: cardPlayAnimation 0.6s ease-out;
+}
+
+/* تأثير عند الفوز بالحيلة */
+.played-cards.winning .card {
+    animation: cardWinGlow 0.8s ease-in-out;
+}
+
+/* أنيميشن للنقاط */
+@keyframes scoreUpdate {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+        background: rgba(255, 215, 0, 0.3);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.player-score.updated {
+    animation: scoreUpdate 0.5s ease-in-out;
+}
+
+/* أنيميشن للرسائل */
+@keyframes messagePopIn {
+    0% {
+        transform: translate(-50%, -50%) scale(0.5);
+        opacity: 0;
+    }
+    70% {
+        transform: translate(-50%, -50%) scale(1.1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+}
+
+.message-area {
+    animation: messagePopIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* أنيميشن للنوافذ المنبثقة */
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes modalSlideUp {
+    from {
+        transform: translateY(100px) scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+.modal {
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+.modal-content {
+    animation: modalSlideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* أنيميشن للأزرار */
+.btn {
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.btn:hover {
+    transform: translateY(-3px) scale(1.05);
+}
+
+.btn:active {
+    transform: translateY(0) scale(0.98);
+}
+
+/* تحسين رؤية الأوراق في اليد */
+.player-hand .card .rank {
+    font-size: 1rem !important;
+    font-weight: bold;
+}
+
+.player-hand .card .suit {
+    font-size: 1.2rem !important;
+}
+
+/* إضافة ظل أقوى للأوراق لتحسين الرؤية */
+.player-hand .card {
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+    border: 2px solid rgba(255, 255, 255, 0.8) !important;
+}
+
+.player-hand .card:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* تحسين الأوراق الملعوبة */
+.played-cards .card {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+/* أنيميشن عند توزيع الأوراق */
+@keyframes dealCard {
+    0% {
+        transform: translateX(-100px) translateY(-100px) rotate(-45deg);
+        opacity: 0;
+    }
+    60% {
+        transform: translateX(10px) translateY(10px) rotate(5deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(0) translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+.card.dealing {
+    animation: dealCard 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* تأثير النبض للأوراق القابلة للعب */
+@keyframes cardPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 6px 16px rgba(255, 215, 0, 0.5);
+    }
+}
+
+.player-hand .card.playable {
+    animation: cardPulse 2s ease-in-out infinite;
+    cursor: pointer;
+}
+
+/* تحسين الأوراق في الميدان */
+.field-cards .card {
+    position: relative;
+}
+
+.field-cards .card::after {
+    content: '?';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.4);
+}
+
