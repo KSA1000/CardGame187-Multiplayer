@@ -16,8 +16,8 @@ const io = socketIO(server, {
 
 const PORT = process.env.PORT || 3000;
 
-// Middleware
-app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(express.static(__dirname));
 app.use(express.json());
 
 // تخزين الغرف النشطة
